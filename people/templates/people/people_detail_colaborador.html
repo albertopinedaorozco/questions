@@ -1,0 +1,115 @@
+{% extends parent_template|default:"people/base_people.html" %}
+
+{% block title %}
+	{{ block.super }} - Preguntas 
+{% endblock %}
+
+{% block content %}
+         
+                 <!-- <h4> <span style="color:#D00308">¿ Tienes alguna duda ?</span> Te ayudamos a resolverla.</h4> -->
+
+                    <div class="page-header">
+                      <h2>Colaborador</h2>
+                      <h3><small>Quienes generan contenido para la comunidad</small></h3>
+                    </div>
+              
+                 <article class="panel panel-success">
+                    <div class="panel-body">
+                      
+                      <div class="row">
+                        <div class="col-md-2">
+                            <div>
+                                <!-- <img src="{{ colaborador.foto.url }}" width="120px" height="100px"> -->
+                                {{ colaborador.admin_foto }}
+                            </div>
+                        </div>
+                         <div class="col-md-7">
+                            <p><strong>Nombres:</strong>  {{ colaborador.user.first_name }}</p>
+                            <p><strong>Apellidos:</strong> {{ colaborador.user.last_name }}</p>
+                            <p><strong>Email:</strong> {{ colaborador.user.email }}</p>
+                           <!-- <p><strong>perfil Facebook:</strong> <a href="{{ colaborador.link_facebook }}" target="_blank">{{ colaborador.link_facebook }}</a></p>
+                            <p><strong>perfil Twitter:</strong> {{ colaborador.link_twitter }}</p> -->
+                        </div>
+                         
+                      </div>
+                       
+                    </div>
+                 
+                </article>
+                  
+           
+                        
+
+                        
+                   
+
+{% endblock %}
+
+{% block content2 %}
+
+                 
+                
+
+{% endblock %}
+
+{% block content3 %}
+      <div id="listacolaboradores" class="list-group">
+        <ul>
+                    <li> <p class="titulo">Top 5 de colaboradores</p></li>
+                 
+
+                  {%  for col in colaboradores_top %}
+                    <li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+                    {% empty %}
+           <p><em>No hay colaboradores en el top 5</em></p>
+                  {% endfor %}
+                  
+                
+               </ul>
+          </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+        <ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                       <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                          <button class="btn btn-primary btn-sm" type="button">
+                            {{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                          </button>
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

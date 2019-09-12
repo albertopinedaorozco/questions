@@ -1,0 +1,162 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    	<title>{% block title %}
+     			    Preguntamoss
+     		    {% endblock %}
+    	</title>
+
+
+<script src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/tinymce/custom.js' %}" ></script>
+
+      <link  rel="stylesheet" type="text/css" href="{% static 'site/normalize.css' %}" >
+      <link  rel="stylesheet" type="text/css" href="{% static 'site/estilo.css' %}">  
+        <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" type="text/css" href="{% static 'site/bootstrapmin.css' %}" > 
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" type="text/css" href="{% static 'site/bootstrap-thememin.css' %}" > 
+
+</head>
+<body>
+
+  <div id="container" >
+
+  <header>
+					
+			 <figure>
+               
+              <a href="{% url 'question_recents_list' %}"> 
+                <img  src="{% static 'site/preguntamosAnterior.png' %}"  alt="Site Logo" width="200px" height="100px">
+                <!--  <img  src="{% static 'site/preguntamos3.png' %}"  alt="Site Logo" width="200px" height="100px"> -->
+              </a>
+            </figure>
+			<nav>
+        <ul>
+					<li><a href="{% url 'question_list' %}">Listado de preguntas</a>
+                        <ul>
+                            <li><a href="{% url 'question_list_withouR' %}">Preguntas sin responder</a></li>
+                        </ul>
+                    </li>
+					<li><a href="{% url 'question_ask_create' %}">Has un pregunta</a></li>
+					<li><a href="{% url 'blog_post_list' %}">Articulos</a></li>
+					<li><a href="{% url 'people_colaborador_list' %}">Colaboradores</a></li>
+                   {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Cerrar sesión</a>
+                    <ul>
+                             <li><a href="{% url 'change_password' %}">Cambiar contraseña</a></li>
+                             <li><a href="{% url 'profile' %}">Mi perfil</a></li>
+                    </ul>
+                    {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar sesión</a>
+                    <ul>
+                            <li><a href="{% url 'people_colaborador_create' %}">Quiero registrarme</a></li>
+                        </ul>
+                    {% endif %}
+                        
+
+                    </li>
+				</ul>
+
+
+			</nav> 
+
+   <!-- <div id="logocbn">
+       <a href="http://cbn.edu.co/" target="_blank"> 
+            <img  src="{% static 'site/cbn.png' %}"  alt="Site Logo" width="150px" height="130px">
+      </a>
+      
+
+    </div> -->
+   
+    	
+    </header>
+
+    
+  
+      <div id="contenido" class="container">
+
+          <div class="row" id="rowprincipal">
+            
+            <div class="col-md-9" id="colbase"> <!-- Contenido especifico de la pagina -->
+                  
+                     <div class="row">
+                         <section  id="hacepreguntas">
+                            {% block content %}
+                          This is default content!
+                        {% endblock %}
+                      </section>
+
+                     </div>
+
+                     <div class="row">
+                        <section  id ="preguntasrecientes">
+                      
+                            {% block content2 %}
+                          
+                          {% endblock %}
+                
+                        </section>
+                     </div>
+                          
+                  
+
+            </div>
+            
+            <div class="col-md-3" id="colaside">
+                <aside id="categoria" class="row" class="list-group">
+
+                          {% block content4 %}
+                           
+                          {% endblock %}
+                </aside>
+
+            
+              <aside id="topcolaboradores" class="row" class="list-group">
+                   
+                    {% block content3 %}
+             
+                {% endblock %}
+              </aside>
+
+              <aside id="toppublicaciones" class="row" class="list-group">
+                   
+                    {% block content5 %}
+                   
+                {% endblock %}
+              </aside>
+              
+             </div>
+
+          </div>
+
+
+    </div> <!-- fin de div contenido -->
+
+        
+  </div> <!-- fin de div #container -->
+<footer>
+      <div id="up">
+        <p> Hablar es barato. Enséñame el código. - Linus Torvalds   </p> <!--<a href="http://cbn.edu.co" target="_blank"><strong>Corporación Bolivariana del Norte CBN</strong></a></p> -->
+        <p> Escuela de las TIC </p>
+        <p> Desarrollado por: Ing. Fireman Pineda Orozco</p>
+        <p> Diseño pagina principal: Jonathan Palacios - Egresado DMCG CBN</p>
+      </div>
+      <div id="down">
+        <p>Soporte, dudas, sugerencias favor enviar a: ing.firemancda@gmail.com</p>
+        <p>© {% now 'Y'  %} All Rights Reserved</p>
+      </div>
+        
+</footer>
+  
+
+</div> <!-- div container mas externo -->
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>  -->
+
+<script src="{% static 'site/bootstrapmin.js' %}" ></script>
+
+</body>
+</html>

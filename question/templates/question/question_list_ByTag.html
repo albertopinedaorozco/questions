@@ -1,0 +1,129 @@
+{% extends parent_template|default:"question/base_question.html" %}
+
+{% block title %}
+	{{ block.super }} - Preguntas 
+{% endblock %}
+
+{% block content %}
+
+       
+             <form action="{% url 'question_ask_create' %}" method="GET">
+                    <div class="page-header">
+                      <h1>¿ Preguntas ? <small>Te ayudamos a resolverlas</small></h1>
+                    </div>
+                      <ul class="input-list style-1 clearfix">
+                          <li>
+                            
+                                                     
+                              <input type="text" size="10px"  name="pregunta" height="25px" placeholder="Has tu pregunta aquí y en instantes recibiras respuestas">
+                              <button type="submit" class="btn btn-primary">PREGUNTAR</button>
+
+
+                                
+                              
+                            <!--  <a class="btn btn-primary btn-lg" href="{% url 'question_ask_create' %}" role="button">PREGUNTAR</a> -->
+                           
+                         </li>
+                      </ul>
+                  </form> 
+
+{% endblock %}
+
+{% block content2 %}
+
+				<h2>Preguntas por categorias: {{ nombreTag }}</h2>
+
+				{%  for quest in questions_byTag %}
+                 <article class="panel panel-danger">
+                     <div class="panel-heading">
+                        <h3 class="panel-title"><a href="{{ quest.get_absolute_url }}">{{ quest.titulo }} </a></h3>
+                      </div>
+                      <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-2">
+                            <div class="fotoEst"><a href="{{ quest.colaboradores.get_absolute_url }}">{{ quest.colaboradores.admin_foto }}</a></div>
+                            <div><span style="font-size: 0.9em; color: rgb(169, 68, 66);"> {{ quest.colaboradores.nombres}} </span></div> <!-- {{quest.colaboradores.apellidos}} -->
+                        </div>
+                         <div class="col-md-8">
+                            
+                            <textarea id="preguntasFrecuentes" >{{ quest.descripcion|truncatewords:23 }}</textarea>
+
+                        </div>
+                         <div class="col-md-2">
+                            <a href="{{ quest.get_absolute_url }}"><button type="button" class="btn btn-danger btn-sm">RESPONDER</button></a>
+                        </div>
+
+
+                      </div>
+                        
+                    </div>
+                    <div class="panel-footer"> <span class="glyphicon glyphicon-hourglass"></span> {{ quest.fecha }} <span class="glyphicon glyphicon-option-vertical"></span> <a href="#">{{ quest.tag }}</a> <span class="glyphicon glyphicon-option-vertical"></span> Respuestas {{ quest.getCantidadeRespuesta }}</div>
+                </article>
+                	{% empty %}
+					 <p><em>No hay preguntas disponibles</em></p>
+                {% endfor %} 
+               
+
+{% endblock %}
+
+{% block content3 %}
+      <div id="listacolaboradores" class="list-group">
+        <ul>
+                    <li> <p class="titulo">Top 5 de colaboradores</p></li>
+                 
+
+                  {%  for col in colaboradores_top %}
+                    <li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+                    {% empty %}
+           <p><em>No hay colaboradores en el top 5</em></p>
+                  {% endfor %}
+                  
+                
+               </ul>
+          </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+        <ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                       <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                          <button class="btn btn-primary btn-sm" type="button">
+                            {{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                          </button>
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

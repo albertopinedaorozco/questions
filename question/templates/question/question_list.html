@@ -1,0 +1,123 @@
+{% extends parent_template|default:"question/base_question.html" %}
+
+{% block title %}
+	{{ block.super }} - Preguntas 
+{% endblock %}
+
+{% block content %}
+
+                   
+                           
+                   <form action="{% url 'question_ask_create' %}" method="GET">
+                    <div class="page-header">
+                      <h1>¿ Preguntas ? <small>Te ayudamos a resolverlas</small></h1>
+                    </div>
+                      <ul class="input-list style-1 clearfix">
+                          <li>
+                            
+                                                     
+                              <input type="text" size="10px"  name="pregunta" height="25px" placeholder="Has tu pregunta aquí y en instantes recibiras respuestas">
+                              <button type="submit" class="btn btn-primary">PREGUNTAR</button>
+
+                          
+                         </li>
+                      </ul>
+                  </form>        
+
+                        
+                   
+
+{% endblock %}
+
+{% block content2 %}
+	             
+                    <div class="page-header">
+                      <h2>Listado de preguntas</h2>
+                      <!-- <h3><small>{{ pregunta.descripcion }}</small></h3> -->
+                    </div>
+                    <article class="panel panel-success">
+                 
+                 <table class="table table-bordered">
+                       <tr>
+                        <th>Titulo</th>
+                        <th>Fecha</th>
+                        <th>Categoria</th>
+                       </tr>
+                    {%  for pre in questions_all %}
+                           <tr>
+                             <td><a href="{{ pre.get_absolute_url }}">{{ pre.titulo }}</a></td>
+                             <td>{{ pre.fecha }}</td>
+                             <td>{{ pre.tag }}</td>
+                           </tr>
+                                   
+                        {% empty %}
+                 <p><em>No hay listado de preguntas</em></p>
+                      {% endfor %} 
+              </table>
+
+
+                </article>          
+
+{% endblock %}
+
+{% block content3 %}
+   <div id="listacolaboradores" class="list-group">
+        <ul>
+                    <li> <p class="titulo">Top 5 de colaboradores</p></li>
+                 
+
+                  {%  for col in colaboradores_top %}
+                    <li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+                    {% empty %}
+           <p><em>No hay colaboradores en el top 5</em></p>
+                  {% endfor %}
+                  
+                
+               </ul>
+          </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+        <ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                       <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                          <button class="btn btn-primary btn-sm" type="button">
+                            {{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                          </button>
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

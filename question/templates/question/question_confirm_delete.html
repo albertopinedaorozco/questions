@@ -1,0 +1,122 @@
+{% extends parent_template|default:"question/base_question.html" %}
+
+{% block title %}
+	{{ block.super }} - Preguntas 
+{% endblock %}
+
+{% block content %}
+
+                   
+                       <!-- <h4> <span style="color:#D00308">¿ Tienes alguna duda ?</span> Te ayudamos a resolverla.</h4> -->
+
+                 <!--   <div class="page-header">
+	                      <h2>{{ pregunta.titulo }}</h2>
+	                      <h3><small>{{ pregunta.descripcion }}</small></h3>
+                    </div>  -->
+                <article class="panel panel-success">
+	                     <div class="panel-heading">
+	                        <h3 class="panel-title">
+	                        	Eliminar pregunta
+                          </h3>
+	                         
+	                     </div> 
+	                     <div class="panel-body">
+		                      <div class="row">
+		                            <div class="col-md-12">
+			                            <form  action="{{ pregunta.get_delete_url }}"  method="post"  class="contact_form">
+			                            	<div>
+			                            		 {% csrf_token %}
+											        <p>
+												¿ <em>Estas seguro que deseas eliminar: </em> <strong>{{ pregunta }}</strong>?
+												 </p>
+												 <a href="{{ pregunta.get_absolute_url }}">
+												 Cancelar</a>
+											       
+											       
+										       
+                              <button id="accion"  class="btn btn-success" type="submit">Borrar pregunta</button>
+										         
+                        </div>
+										 </form>
+			                        </div>
+			                       
+			                         
+		                         
+		                      </div>
+	                        
+	                       
+
+	                    </div>
+                 
+                </article>
+                    
+
+{% endblock %}
+
+{% block content2 %}
+
+               
+
+{% endblock %}
+
+{% block content3 %}
+   <div id="listacolaboradores" class="list-group">
+        <ul>
+                    <li> <p class="titulo">Top 5 de colaboradores</p></li>
+                 
+
+                  {%  for col in colaboradores_top %}
+                    <li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+                    {% empty %}
+           <p><em>No hay colaboradores en el top 5</em></p>
+                  {% endfor %}
+                  
+                
+               </ul>
+          </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+        <ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                       <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                          <button class="btn btn-primary btn-sm" type="button">
+                            {{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                          </button>
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

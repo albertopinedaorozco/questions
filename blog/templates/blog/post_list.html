@@ -1,0 +1,118 @@
+{% extends parent_template|default:"blog/base_blog.html" %}
+
+{% block title %}
+	{{ block.super }} - Publicar 
+{% endblock %}
+
+{% block content %}
+
+                   
+                       <!-- <h4> <span style="color:#D00308">¿ Tienes alguna duda ?</span> Te ayudamos a resolverla.</h4> -->
+
+                    <div class="page-header">
+                      <h2>Leer es una pilar fundamental para el aprendizaje</h2>
+                      <h3 style="text-align: justify"><small >Sabemos que la lectura es importante, existen muchos tutoriales y articulos en internet que te permitirán tener una mejor comprensión de tus temas de interes, en esta sección los mas destacados colaboradores publicarán articulos periodicamente, los cuales te permitiran afianzar tu conocimiento. Tienes aqui un listado de publicaciones realizadas por nuestros mas destacados colaboradores, que aportan desinteresadamente a la comunidad con el fin de enriquecer nuestro conocimiento.</small></h3>
+                    </div>
+                    <div>
+                    {% if user.is_authenticated %}
+						<a href="{%  url 'blog_post_create' %}">Escribir una publicación...</a>
+					{% endif %}
+					</div>
+              {% for post in post_list %}
+				 <article class="panel panel-success">
+					 <div class="panel-body">
+						 <h2>
+							 <a href="{{ post.get_absolute_url }}"> {{ post.title|title }}</a>
+						 </h2>
+						 <p>  fecha de publicación:  <time datetime="{{ post.pub_date|date:"Y-m-d" }}">
+						 	{{ post.pub_date|date:"l, F j, Y" }}
+						   					</time>
+						 </p>
+					 </div>
+					 <p>
+										<textarea id="preguntasFrecuentes" rows="1">
+										 	{{ post.text|truncatewords:40 }}
+				                        </textarea>
+									
+
+					 </p>
+
+					 <p>
+						 <a href="{{ post.get_absolute_url }}"> Leer mas&hellip;</a>
+					 </p>
+				 </article>
+				 {% empty %}
+				 <p><em>No hay publicaciones disponibles aun.</em></p>
+				 {% endfor %}
+                
+                   
+
+{% endblock %}
+
+{% block content2 %}
+
+               
+
+{% endblock %}
+
+{% block content3 %}
+			<div id="listacolaboradores" class="list-group">
+				<ul>
+	                  <li> <p class="titulo">Top 5 de colaboradores</p></li>
+	               
+
+	                {%  for col in colaboradores_top %}
+	                 	<li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+	                 	{% empty %}
+					 <p><em>No hay colaboradores en el top 5</em></p>
+	                {% endfor %}
+	                
+	              
+	             </ul>
+	        </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+				<ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                     	 <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                       	 	<button class="btn btn-primary btn-sm" type="button">
+                       	 		{{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                      		</button>
+                          </a>
+                    	</li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

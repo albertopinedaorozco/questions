@@ -1,0 +1,147 @@
+{% extends parent_template|default:"blog/base_blog.html" %}
+
+{% block title %}
+	{{ block.super }} - Publicar 
+{% endblock %}
+
+{% block content %}
+
+                   
+                       <!-- <h4> <span style="color:#D00308">¿ Tienes alguna duda ?</span> Te ayudamos a resolverla.</h4> -->
+
+                <article class="panel panel-success">
+                	 <div class="panel-heading">
+                        <h3 class="panel-title"><strong>{{ post.title|title }} </strong></h3>
+                        {% if user.is_authenticated %} 
+
+							 {% if post.colaboradores.user == user %}
+								 <ul>
+								 	<li>
+								 		<a href="{{ post.get_update_url }}">Editar Publicación</a>
+								 	</li>
+								 	<li>
+								 		<a href="{{ post.get_delete_url }}">Borrar Publicación</a>
+								 	</li>
+								 </ul>
+							 {% endif %}
+					  {% endif %}
+                      </div>
+                      
+					 <div class="panel-body">
+						  
+						 {% if post.admin_foto is not None %}
+						 		<div id="img_pregunta">
+		                              {{ post.admin_foto }}
+		                        </div>
+		                 {% endif %} 
+						
+							 <textarea id="descripcionPregunta">
+							 	 <div style="text-align: justify;">
+	                            	{{ post.text }}
+	                            </div>
+	                         </textarea>
+                         
+						 
+	 				</div>
+	 				<div class="panel-footer">  
+	 				 Autor:
+	 				 <a href="{{ post.colaboradores.get_absolute_url }}"> {{ post.colaboradores.user.first_name }}
+	 				 {{ post.colaboradores.user.last_name }} </a>
+	 				  <span class="glyphicon glyphicon-option-vertical"></span>
+	 				  Fecha de publicación: <time datetime="{{ post.pub_date|date:"Y-m-d" }}">
+							 {{ post.pub_date|date:"l, F j, Y" }}
+							 </time>
+
+					{% if post.tags.all %}
+					<section>
+					<h3>Categorias</h3>
+								 			 
+								 <ul>
+									 {% for tag in post.tags.all %}
+									 <!--<li><a href="{{ tag.get_absolute_url }}"> {{ tag.name|title }} </a></li> -->
+									 <li> {{ tag.name|title }} </li>
+									 {% endfor %}
+								 </ul>
+					</section>
+					{% endif %}
+	 				   
+	 				</div>
+
+ 						
+				</article>
+            
+  
+
+{% endblock %}
+
+{% block content2 %}
+
+
+
+
+				
+              
+
+{% endblock %}
+
+{% block content3 %}
+			<div id="listacolaboradores" class="list-group">
+				<ul>
+	                  <li> <p class="titulo">Top 5 de colaboradores</p></li>
+	               
+
+	                {%  for col in colaboradores_top %}
+	                 	<li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+	                 	{% empty %}
+					 <p><em>No hay colaboradores en el top 5</em></p>
+	                {% endfor %}
+	                
+	              
+	             </ul>
+	        </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+				<ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                     	 <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                       	 	<button class="btn btn-primary btn-sm" type="button">
+                       	 		{{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                      		</button>
+                          </a>
+                    	</li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}

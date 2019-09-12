@@ -1,0 +1,192 @@
+{% extends parent_template|default:"question/base_question.html" %}
+
+{% block title %}
+	{{ block.super }} - Preguntas 
+{% endblock %}
+
+{% block content %}
+
+                   
+                       <!-- <h4> <span style="color:#D00308">¿ Tienes alguna duda ?</span> Te ayudamos a resolverla.</h4> -->
+                
+                <article class="panel panel-info">
+                    <div class="panel-heading">
+                      <div class="row">
+                            <h2 class="col-md-10">{{ pregunta.titulo }}</h2>
+                            <div class="col-md-2" id="img_colaborador"><a href="{{ pregunta.colaboradores.get_absolute_url }}">{{ pregunta.colaboradores.fotoxs }}</a>
+                           </div>
+                        </div>
+
+                        {% if user.is_authenticated %}
+                        {% if user == pregunta.colaboradores.user %}
+                      <ul>
+                        <li><a href="{{ pregunta.get_update_url }}">Editar pregunta</a></li>
+                        <li><a href="{{ pregunta.get_delete_url }}">Borrar pregunta</a></li>
+                      </ul>
+                         {% endif %}
+                     {% endif %}
+                        
+                    </div>
+                    <div class="page-header">
+                     
+                      
+                     {% if pregunta.admin_foto is not None %}   
+                        <div id="img_pregunta">
+                              {{ pregunta.admin_foto }}
+                        </div>
+                      {% endif %} 
+                        <textarea id="descripcionPregunta">
+                            {{ pregunta.descripcion }}
+                        </textarea>
+          
+                       
+                    </div>
+                </article>
+
+
+                  <h2>Respuestas</h2>
+              {%  for respuesta in respuestas %}
+                 <article class="panel panel-success">
+                     <div class="panel-heading">
+                        <h3 class="panel-title"><a href="{{ respuesta.Colaborador.get_absolute_url }}">{{ respuesta.Colaborador.user.first_name }} {{respuesta.Colaborador.user.last_name}}</a>
+                          <span class="glyphicon glyphicon-option-vertical"></span>
+                           <span class="glyphicon glyphicon-hourglass"></span> 
+                           {{ respuesta.fecha }} 
+                        </h3>
+                        {% if user.is_authenticated %}
+                        {% if user == respuesta.Colaborador.user %}
+                      <ul>
+                        <li><a href="{{ respuesta.get_update_url }}">Editar respuesta</a></li>
+                        <li><a href="{{ respuesta.get_delete_url }}">Borrar respuesta</a></li>
+                      </ul>
+                         {% endif %}
+                     {% endif %}
+                        
+                      </div> 
+                      <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-2">
+                            <div class="fotoEst"><a href="{{ respuesta.Colaborador.get_absolute_url }}">{{ respuesta.Colaborador.admin_foto }}</a></div>
+                        </div>
+                         <div class="col-md-10">
+                              {% if respuesta.admin_foto %} 
+                               {{ respuesta.admin_foto }}
+                              {% endif %}
+                             
+                             <textarea id="descripcionRespuesta">
+                               {{ respuesta.descripcion }}
+                             </textarea>
+                        </div>
+                         
+                      </div>
+                        
+                    </div>
+                 
+                </article>
+                  {% empty %}
+           <p><em>No hay respuestas disponibles aun. Sé el primero en responder</em></p>
+                {% endfor %} 
+                        
+               
+                   
+
+{% endblock %}
+
+{% block content2 %}
+<h2>Tu respuesta...</h2>
+ <article class="panel panel-warning">
+                       <div class="panel-heading">
+                          y gracias de antemano, tu colaboración es muy importante.
+                          <span class="required_notification">* Datos requeridos</span>
+                        </div>
+
+                         <div class="panel-body">
+                            <form  action="{{ pregunt.get_absolute_url }}"  method="post" enctype="multipart/form-data" class="contact_form">
+                              <div>
+                                  <ul>
+                                     {% csrf_token %}
+                                    {{ form.as_ul }}
+
+                                  </ul>
+
+                                  {% if user.is_authenticated %} 
+                                        <button id="accion" type="submit" class="btn btn-success">Enviar respuesta</button>
+                                   {% else %}
+                                        <p class="mensaje_P">Para registrar una respuesta, debes incribirte, es facil, hazlo ahora mismo <a href="{% url 'people_colaborador_create' %}">aquí.</a></p>
+                                   {% endif %}
+                                   
+                            </div>
+      
+         
+                          </form>
+
+                         </div>
+</article>
+
+
+
+                
+
+{% endblock %}
+
+{% block content3 %}
+      <div id="listacolaboradores" class="list-group">
+        <ul>
+                    <li> <p class="titulo">Top 5 de colaboradores</p></li>
+                 
+
+                  {%  for col in colaboradores_top %}
+                    <li> <a href="{{ col.Colaborador.get_absolute_url }}" class="list-group-item list-group-item-danger"><span class="glyphicon glyphicon-user"></span>  {{col.Colaborador.user.get_full_name|truncatechars:25 }} <span class="badge">
+                    {{ col.Colaborador__count }}
+                      </span>
+                    </a>
+                    </li>
+                    {% empty %}
+           <p><em>No hay colaboradores en el top 5</em></p>
+                  {% endfor %}
+                  
+                
+               </ul>
+          </div>
+
+
+{% endblock %}
+
+{% block content5 %}
+        <ul>
+                    <li> <p class="titulo">Ultimas publicaciones</p></li>
+                     {%  for post in posts %}
+                       <li>
+                         <a href="{{ post.get_absolute_url }}">
+                          <button class="btn btn-link btn-sm" type="button"> 
+                            {{ post.title|truncatechars:38 }}   
+                          </button> 
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+          </ul>
+
+
+{% endblock %}
+
+
+{% block content4 %}
+        <ul>
+                    <li> <p class="titulo">Categorias</p></li>
+                     {%  for tag in tag_list %}
+                       <li>
+                         <a href="{{ tag.get_questionsTag }}">
+                          <button class="btn btn-primary btn-sm" type="button">
+                            {{ tag.name }}   <span class="badge">{{ tag.getCantidadPreguntasEtiquetadas }}</span>
+                          </button>
+                          </a>
+                      </li>
+
+                      {% endfor %}
+                   
+                </ul>
+
+
+{% endblock %}
