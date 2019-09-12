@@ -82,11 +82,9 @@ WSGI_APPLICATION = 'preguntamoss.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',               #'django.db.backends.sqlite3',
-        'NAME': 'preguntamoss$default',   #os.path.join(BASE_DIR, 'db.sqlite3'), nombre de la base de datos mysql local compu del trabajo : dbpreguntamoss
-        'USER':  'preguntamoss',#'',   #user bd local del trabajo : 'root',
-        'PASSWORD': 'Jevousaime85*', #'Jevousaime85*',
-        'HOST': 'preguntamoss.mysql.pythonanywhere-services.com',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), 
+      
     }
 }
 
